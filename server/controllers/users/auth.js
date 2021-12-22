@@ -10,7 +10,6 @@ module.exports = (req, res) => {
     return;
   }
 
-  //  console.log(req);
   console.log('authorization', req.headers.authorization);
   const accessTokenData = isAuthorized(req.headers.authorization);
 

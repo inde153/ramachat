@@ -5,8 +5,6 @@ const { encrypt, decrypt } = require('./crypto');
 module.exports = (req, res) => {
   const { userId, password } = req.body;
 
-  console.log(userId, password);
-
   Users.findOne({
     where: {
       userId,
