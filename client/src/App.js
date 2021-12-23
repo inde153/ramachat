@@ -70,10 +70,6 @@ function App() {
       });
   };
 
-  const checkButton = () => {
-    console.log(tokenState);
-  };
-
   useEffect(() => {
     isAuthenticated();
     console.log('token updated');
@@ -81,7 +77,6 @@ function App() {
 
   return (
     <>
-      <button onClick={checkButton}>checktokenstate</button>
       <Navbar isLogin={isLogin} handleLogout={handleLogout} />
       <Routes>
         <Route

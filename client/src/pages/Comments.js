@@ -45,7 +45,7 @@ const Still = styled.div`
 `;
 
 const CommentsContainer = styled.div`
-  /* position: relative; */
+  margin-top: 1rem;
 `;
 
 const CommentsList = styled.ul`

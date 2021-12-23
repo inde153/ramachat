@@ -37,12 +37,16 @@ export default function ActivityComment({ comment, userId }) {
     console.log('링크로 이동 수정');
   };
 
+  const createdAt = new Date(comment.createdAt).toLocaleString('ko-KR', {
+    timeZone: 'Asia/Seoul',
+  });
+
   return (
     <>
       <CommentContainer>
         <CommentInfoContainer>
           <p>이름없는라마</p>
-          <p className="created-date">{comment.createdAt}</p>
+          <p className="created-date">{createdAt}</p>
         </CommentInfoContainer>
         <p>{content}</p>
         <ButtonContainer>

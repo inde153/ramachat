@@ -3,7 +3,7 @@ const axios = require('axios');
 export function getDramas(keyword) {
   return axios
     .get(
-      `https://api.themoviedb.org/3/search/tv/?api_key=${process.env.REACT_APP_API_KEY}&query=${keyword}&include_adult=false`,
+      `https://api.themoviedb.org/3/search/tv/?api_key=${process.env.REACT_APP_API_KEY}&query=${keyword}&include_adult=false&language=ko-KR`,
       {
         withCredentials: false,
       }
@@ -16,7 +16,7 @@ export function getDramas(keyword) {
 export function getDrama(dramaId) {
   return axios
     .get(
-      `https://api.themoviedb.org/3/tv/${dramaId}?api_key=${process.env.REACT_APP_API_KEY}`,
+      `https://api.themoviedb.org/3/tv/${dramaId}?api_key=${process.env.REACT_APP_API_KEY}&language=ko-KR`,
       {
         withCredentials: false,
       }
@@ -29,7 +29,7 @@ export function getDrama(dramaId) {
 export function getEpisodes(dramaId, seasonIdx) {
   return axios
     .get(
-      `https://api.themoviedb.org/3/tv/${dramaId}/season/${seasonIdx}?api_key=${process.env.REACT_APP_API_KEY}`,
+      `https://api.themoviedb.org/3/tv/${dramaId}/season/${seasonIdx}?api_key=${process.env.REACT_APP_API_KEY}&language=ko-KR`,
       {
         withCredentials: false,
       }
@@ -42,7 +42,7 @@ export function getEpisodes(dramaId, seasonIdx) {
 export function getEpisode(dramaId, seasonIdx, episodeIdx) {
   return axios
     .get(
-      `https://api.themoviedb.org/3/tv/${dramaId}/season/${seasonIdx}/episode/${episodeIdx}?api_key=${process.env.REACT_APP_API_KEY}`,
+      `https://api.themoviedb.org/3/tv/${dramaId}/season/${seasonIdx}/episode/${episodeIdx}?api_key=${process.env.REACT_APP_API_KEY}&language=ko-KR`,
       {
         withCredentials: false,
       }

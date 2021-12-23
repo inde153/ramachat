@@ -11,6 +11,7 @@ const SolidButton = styled.button`
   background: none;
   cursor: pointer;
   padding: 0.5rem 1rem;
+  white-space: nowrap;
 
   /* 크기 */
   font-size: 1rem;
@@ -36,6 +37,7 @@ const TransparentButton = styled.button`
   background: none;
   cursor: pointer;
   padding: 0.5rem 1rem;
+  white-space: nowrap;
 
   /* 크기 */
   font-size: 1rem;

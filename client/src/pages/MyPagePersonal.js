@@ -10,18 +10,32 @@ import { useEffect, useState } from 'react';
 
 const Main = styled.main`
   width: 100%;
-  @media ${device.tablet} {
-    background-color: ${colors.white};
-    height: calc(100vh - 80px);
-    display: flex;
-  }
+  max-width: 850px;
+  margin: 0 auto;
+  display: flex;
+  position: relative;
+`;
 
-  section {
-    display: flex;
-    flex-direction: column;
-    /* justify-content: center; */
-    padding-left: 20px;
-    padding-top: 20px;
+const Section = styled.section`
+  margin-left: 60px;
+  width: 100%;
+  height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border-right: 1px solid ${colors.primary};
+  input {
+    margin-bottom: 1rem;
+  }
+  p {
+    line-height: 2;
+  }
+  .alert {
+    font-family: SpoqaHanSansNeo-Regular;
+    margin-bottom: 1rem;
+  }
+  @media ${device.tablet} {
+    margin-left: 240px;
   }
 `;
 
@@ -188,35 +202,40 @@ export default function MyPagePersonal({ tokenState, handleLogout }) {
     <>
       <Main>
         <Tabbar></Tabbar>
-        <section>
+        <Section>
           <h1>My Page</h1>
-          <p>User Id : {userId}</p>
-          <p>E-mail : {email}</p>
+          <p>
+            User Id : {userId}
+            <br />
+            E-mail : {email}
+          </p>
           {isChange ? (
             <>
-              <p>현재 비밀번호</p>
               <InputForm
+                label="현재 비밀번호"
                 target="nowPassword"
                 type="password"
                 handleInputValue={handleInputValue}
               ></InputForm>
-              <p>새 비밀번호</p>
               <InputForm
+                label="새 비밀번호"
                 target="newPassword"
                 type="password"
                 handleInputValue={handleInputValue}
               ></InputForm>
               {/* 유효성 검사 결과 메시지 */}
-              {passwordInfo.newPassword.length > 0 && <span>{passwordMessage}</span>}
-              <p>새 비밀번호 확인</p>
+              {passwordInfo.newPassword.length > 0 && (
+                <span className="alert">{passwordMessage}</span>
+              )}
               <InputForm
+                label="새 비밀번호 확인"
                 target="newPasswordConfirm"
                 type="password"
                 handleInputValue={handleInputValue}
               ></InputForm>
               {/* 비밀번호 확인 메시지 */}
               {passwordInfo.newPasswordConfirm.length > 0 && (
-                <span>{passwordConfirmMessage}</span>
+                <span className="alert">{passwordConfirmMessage}</span>
               )}
               <br />
               <TextButton
@@ -264,7 +283,7 @@ export default function MyPagePersonal({ tokenState, handleLogout }) {
               />
             </>
           )}
-        </section>
+        </Section>
       </Main>
     </>
   );

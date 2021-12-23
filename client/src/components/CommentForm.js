@@ -45,7 +45,6 @@ export default function CommentForm({
   const handleClick = (e) => {
     e.preventDefault();
     if (!userId) {
-      console.log('LOG IN REQUIRED!!!');
       setIsModalOpen(true);
     } else {
       postComment(
@@ -89,13 +88,13 @@ export default function CommentForm({
           width="fit"
           onClick={handleClick}
         >
-          Send
+          보내기
         </TextButton>
       </Form>
       <Modal
         isOpen={isModalOpen}
         noticeMessage={'로그인이 필요합니다.'}
-        buttonMessage={'login'}
+        buttonMessage={'로그인'}
         endPoint={'/login'}
         openModalHandler={openModalHandler}
       />

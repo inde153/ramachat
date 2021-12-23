@@ -11,6 +11,10 @@ const ReplyContainer = styled.article`
   padding-left: 2rem;
   border-top: 1px solid ${colors.grey};
   background-color: ${colors.greyL};
+
+  textarea {
+    width: 100%;
+  }
 `;
 
 const ReplyInfoContainer = styled.div`
@@ -84,11 +88,15 @@ export default function Reply({
     });
   };
 
+  const createdAt = new Date(reply.createdAt).toLocaleString('ko-KR', {
+    timeZone: 'Asia/Seoul',
+  });
+
   return (
     <ReplyContainer>
       <ReplyInfoContainer>
         <p>└ 이름없는라마</p>
-        <p className="created-date">{reply.createdAt}</p>
+        <p className="created-date">{createdAt}</p>
       </ReplyInfoContainer>
       {isEditable ? (
         <textarea value={editedContent} onChange={handleTextarea}></textarea>

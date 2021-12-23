@@ -11,7 +11,7 @@ const Main = styled.main`
   width: 100%;
   @media ${device.tablet} {
     background-color: ${colors.primaryL};
-    height: calc(100vh - 80px);
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,7 +32,7 @@ const LoginContainer = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
     align-items: center;
   }
 `;
@@ -86,15 +86,15 @@ export default function Login({ handleResponseSuccess }) {
     <Main>
       <LoginContainer>
         <form onSubmit={(e) => e.preventDefault()}>
-          <h1>Log In</h1>
+          <h1>로그인</h1>
           <InputForm
             target="userId"
-            label="User ID"
+            label="아이디"
             handleInputValue={handleInputValue}
           ></InputForm>
           <InputForm
             target="password"
-            label="Password"
+            label="패스워드"
             type="password"
             handleInputValue={handleInputValue}
           ></InputForm>
@@ -105,11 +105,10 @@ export default function Login({ handleResponseSuccess }) {
             width="full"
             onClick={handleLogin}
           >
-            Log In
+            로그인
           </TextButton>
-          <br />
           <Link to="/signup">
-            <LinkSpan>Sign up</LinkSpan>
+            <LinkSpan>아직 계정이 없으신가요?</LinkSpan>
           </Link>
         </form>
       </LoginContainer>

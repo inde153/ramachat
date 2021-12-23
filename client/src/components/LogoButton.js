@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import img from '../assets/llama-logo.png';
+import img from '../assets/ramachat-logo.png';
 import { colors } from '../styles/Colors';
 
 const StyledButton = styled.button`
@@ -13,13 +13,13 @@ const StyledButton = styled.button`
   padding: 0.5rem 1rem;
 
   /* 크기 */
-  font-size: 1.5rem;
+  font-size: 2rem;
 
   /* 색상 */
   color: ${colors.white};
 
   img {
-    height: 2rem;
+    height: 3.5rem;
     margin-right: 0.5rem;
   }
 
@@ -33,7 +33,7 @@ function LogoButton() {
   return (
     <StyledButton>
       <img src={img} />
-      <span>RamaChat</span>
+      <span>라마챗</span>
     </StyledButton>
   );
 }

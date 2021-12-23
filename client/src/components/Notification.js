@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import IconButton from './IconButton';
 import { colors } from '../styles/Colors';
+import { device } from '../styles/Breakpoints';
 import { useState } from 'react';
 
 axios.defaults.withCredentials = true;
@@ -10,7 +11,7 @@ axios.defaults.withCredentials = true;
 
 const Main = styled.article`
   width: 100%;
-  padding: 1rem;
+  /* padding: 1rem; */
   /* border: 1px solid ${colors.black}; */
   display: ${(props) => (props.isDeleted ? 'none' : 'block')};
 `;
@@ -20,7 +21,8 @@ const NotificationContainer = styled.div`
   height: 20%;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid ${colors.black};
+  padding: 0.5rem;
+  border-top: 1px solid ${colors.primary};
   // 체크 이전(0)은 핑크색, 체크 이후(1)는 하얀색
   background-color: ${(props) =>
     props.colorChangeIsChecked === 1 ? 'white' : `${colors.primaryL}`};
@@ -32,6 +34,20 @@ const NotificationContainer = styled.div`
 
   p {
     padding-left: 10px;
+  }
+
+  span.quote {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 100px;
+    height: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    @media ${device.tablet} {
+      max-width: 240px;
+    }
   }
 `;
 
@@ -89,7 +105,9 @@ export default function Notification({
           propsIsCheckedFromDb={propsIsCheckedFromDb}
           colorChangeIsChecked={colorChangeIsChecked}
         >
-          <p>"{content}" 댓글에 답변이 달렸습니다.</p>
+          <p>
+            [<span className="quote">{content}</span>]에 답글이 달렸습니다.
+          </p>
           <div>
             <IconButton color="grey" onClick={handleCheck}>
               <i class="far fa-check-square"></i>

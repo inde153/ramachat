@@ -1,53 +1,58 @@
 import styled from 'styled-components';
 import { colors } from '../styles/Colors';
 import { device } from '../styles/Breakpoints';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import IconButton from '../components/IconButton';
+import TextButton from './TextButton';
 
 const TabContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 10%;
-  justify-content: left;
+  width: 60px;
   align-items: center;
-  /* position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0; */
-
-  padding: 1.3rem;
+  gap: 1.25rem;
+  position: fixed;
+  height: 100%;
+  padding: 1.25rem;
   cursor: pointer;
-  background-color: ${colors.primaryL};
+  border-right: 1px solid ${colors.primary};
+  font-size: 1.75rem;
+
+  .nav-name {
+    display: none;
+  }
 
   @media ${device.tablet} {
-    // ! 반응형 수정
-    height: calc(100vh - 80px);
-    display: flex;
-    justify-content: left;
-    align-items: left;
+    align-items: flex-start;
+    width: 240px;
+    padding-left: 2rem;
+    .nav-name {
+      display: inline;
+      font-size: 1.25rem;
+      margin-left: 1rem;
+    }
+  }
+
+  .active {
+    color: ${colors.primary};
   }
 `;
 
 export default function Tabbar() {
   return (
     <TabContainer>
-      <Link to="/mypage/personal-information">
-        <IconButton color="primary" fontSize="2rem">
-          <i class="far fa-user"></i>
-        </IconButton>
-      </Link>
-      <br />
-      <Link to="/mypage/my-activities">
-        <IconButton color="primary" fontSize="2rem">
-          <i class="far fa-comment-dots"></i>
-        </IconButton>
-      </Link>
-      <br />
-      <Link to="/mypage/notifications">
-        <IconButton color="primary" fontSize="2rem">
-          <i class="far fa-bell"></i>
-        </IconButton>
-      </Link>
+      <NavLink to="/mypage/personal-information">
+        <i className="far fa-user"></i>
+        <span className="nav-name">내 정보</span>
+      </NavLink>
+      <NavLink to="/mypage/my-activities">
+        <i className="far fa-comment-dots"></i>
+        <span className="nav-name">내가 쓴 글</span>
+      </NavLink>
+      <NavLink to="/mypage/notifications">
+        <i className="far fa-bell"></i>
+        <span className="nav-name">내 소식</span>
+      </NavLink>
     </TabContainer>
   );
 }

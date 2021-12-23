@@ -24,6 +24,7 @@ const Main = styled.main`
 `;
 
 const DramaInfo = styled.article`
+  margin-top: 1rem;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;

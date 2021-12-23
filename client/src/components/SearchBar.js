@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { colors } from '../styles/Colors';
 import { device } from '../styles/Breakpoints';
 import TextButton from './TextButton';
+import IconButton from './IconButton';
 
 const SearchBarContainer = styled.div`
   width: 100%;
@@ -39,7 +40,7 @@ export default function SearchBar() {
     <SearchBarContainer>
       <SearchInput
         type="text"
-        placeholder="Search the series"
+        placeholder="드라마 제목으로 검색"
         onKeyUp={handleInputChange}
       ></SearchInput>
       <TextButton
@@ -48,7 +49,7 @@ export default function SearchBar() {
         width="fit"
         onClick={handleSubmit}
       >
-        Search
+        <i className="fas fa-search"></i>
       </TextButton>
     </SearchBarContainer>
   );

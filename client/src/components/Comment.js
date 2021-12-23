@@ -18,6 +18,10 @@ const CommentContainer = styled.article`
   padding: 1rem;
   border-top: 1px solid ${colors.primary};
   /* display: ${(props) => (props.hasDeleted ? 'none' : 'block')}; */
+
+  textarea {
+    width: 100%;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -215,13 +219,17 @@ export default function Comment({
     ]);
   };
 
+  const createdAt = new Date(comment.createdAt).toLocaleString('ko-KR', {
+    timeZone: 'Asia/Seoul',
+  });
+
   return (
     <>
       {/* <CommentContainer hasDeleted={hasDeleted}> */}
       <CommentContainer>
         <CommentInfoContainer>
           <p>이름없는라마</p>
-          <p className="created-date">{comment.createdAt}</p>
+          <p className="created-date">{createdAt}</p>
         </CommentInfoContainer>
         {isEditable ? (
           <textarea value={editedContent} onChange={handleTextarea}></textarea>

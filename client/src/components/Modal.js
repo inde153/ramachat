@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { colors } from '../styles/Colors';
+import IconButton from './IconButton';
+import TextButton from './TextButton';
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -8,7 +11,7 @@ const ModalBackdrop = styled.div`
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.75);
   display: grid;
   place-items: center;
 `;
@@ -20,15 +23,9 @@ const ModalContainer = styled.div`
 `;
 
 const ModalView = styled.div`
-  border-radius: 10px;
-  background-color: #ffffff;
+  background-color: ${colors.white};
   width: 300px;
-  height: 140px;
-  > span.close-btn {
-    margin-top: 5px;
-    font-size: 30px;
-    cursor: pointer;
-  }
+  padding: 1rem;
   > p.desc {
     margin-top: 20px;
   }
@@ -69,16 +66,25 @@ function Modal({
         {isOpen ? (
           <ModalBackdrop>
             <ModalView onClick={(e) => e.stopPropagation()}>
-              <span onClick={openModalHandler} className="close-btn">
-                &times;
-              </span>
+              {/* <button onClick={openModalHandler} className="close-btn">
+                <i className="fas fa-times"></i>
+              </button> */}
+              <IconButton onClick={openModalHandler}>
+                <i className="fas fa-times"></i>
+              </IconButton>
               <p className="desc">{noticeMessage}</p>
               {endPoint ? (
                 <Link to={endPoint}>
-                  <ClickButton onClick={modalActionlHandler}>{buttonMessage}</ClickButton>
+                  {/* <ClickButton onClick={modalActionlHandler}>{buttonMessage}</ClickButton> */}
+                  <TextButton color="secondary" width="fit" onClick={modalActionlHandler}>
+                    {buttonMessage}
+                  </TextButton>
                 </Link>
               ) : (
-                <ClickButton onClick={modalActionlHandler}>{buttonMessage}</ClickButton>
+                <TextButton color="secondary" width="fit" onClick={modalActionlHandler}>
+                  {buttonMessage}
+                </TextButton>
+                // <ClickButton onClick={modalActionlHandler}>{buttonMessage}</ClickButton>
               )}
             </ModalView>
           </ModalBackdrop>
