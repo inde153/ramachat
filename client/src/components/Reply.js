@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { colors } from '../styles/Colors';
+import { device } from '../styles/Breakpoints';
 import IconButton from './IconButton';
 import { modifyComment, deleteComment, likeComment } from '../api/CommentsDataAPI';
 import Modal from './Modal';
@@ -20,7 +21,7 @@ const ReplyContainer = styled.article`
 const ReplyInfoContainer = styled.div`
   display: flex;
   justify-content: space-between;
-
+  flex-wrap: wrap;
   .created-date {
     color: ${colors.grey};
   }
@@ -33,6 +34,13 @@ const ButtonContainer = styled.div`
   div {
     display: flex;
     gap: 0.5rem;
+  }
+
+  .icon-name {
+    display: none;
+    @media ${device.tablet} {
+      display: inline;
+    }
   }
 `;
 
@@ -107,11 +115,13 @@ export default function Reply({
         <div>
           {reply.liked ? (
             <IconButton color="primary" onClick={handleLike}>
-              <i class="fas fa-heart"></i> Like {reply.likeNum}
+              <i class="fas fa-heart"></i> <span className="icon-name">Like</span>{' '}
+              {reply.likeNum}
             </IconButton>
           ) : (
             <IconButton color="grey" onClick={handleLike}>
-              <i class="fas fa-heart"></i> Like {reply.likeNum}
+              <i class="fas fa-heart"></i> <span className="icon-name">Like</span>{' '}
+              {reply.likeNum}
             </IconButton>
           )}
         </div>

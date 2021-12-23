@@ -91,24 +91,6 @@ export default function Drama() {
   const [seasonNumber, setSeasonNumber] = useState(1);
   const [episodeInfos, setEpisodeInfos] = useState([]);
 
-  // const dummyData = [
-  //   {
-  //     id: 123,
-  //     episodeIndex: 1,
-  //     commentNum: 10,
-  //   },
-  //   {
-  //     id: 124,
-  //     episodeIndex: 2,
-  //     commentNum: 5,
-  //   },
-  //   {
-  //     id: 125,
-  //     episodeIndex: 5,
-  //     commentNum: 8,
-  //   },
-  // ];
-
   useEffect(() => {
     setEpisodes([]);
     const sendAPICall = async () => {

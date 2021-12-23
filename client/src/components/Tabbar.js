@@ -14,7 +14,6 @@ const TabContainer = styled.div`
   position: fixed;
   height: 100%;
   padding: 1.25rem;
-  cursor: pointer;
   border-right: 1px solid ${colors.primary};
   font-size: 1.75rem;
 

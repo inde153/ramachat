@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { colors } from '../styles/Colors';
+import { device } from '../styles/Breakpoints';
 import IconButton from './IconButton';
 import Modal from './Modal';
 import Reply from './Reply';
@@ -32,12 +33,19 @@ const ButtonContainer = styled.div`
     display: flex;
     gap: 0.5rem;
   }
+
+  .icon-name {
+    display: none;
+    @media ${device.tablet} {
+      display: inline;
+    }
+  }
 `;
 
 const CommentInfoContainer = styled.div`
   display: flex;
   justify-content: space-between;
-
+  flex-wrap: wrap;
   .created-date {
     color: ${colors.grey};
   }
@@ -60,54 +68,6 @@ export default function Comment({
   deleteHandler,
   likeHandler,
 }) {
-  // const [replies, setReplies] = useState([
-  //   {
-  //     id: 125,
-  //     episodeId: 1020,
-  //     userId: 16,
-  //     content:
-  //       'I’ve been looking forward to the new season for such a long time! Finally,Sherlock and Watson are back!',
-  //     likeNum: 10,
-  //     parentCommentId: 123,
-  //     createdAt: '2021-12-15',
-  //     modifiedAt: '2021-12-15',
-  //   },
-  //   {
-  //     id: 126,
-  //     episodeId: 1020,
-  //     userId: 3,
-  //     content: 'It was bit disappointing.',
-  //     likeNum: 2,
-  //     parentCommentId: 123,
-  //     createdAt: '2021-12-14',
-  //     modifiedAt: '2021-12-15',
-  //   },
-  // ]);
-  // dummy data
-  // [
-  //   {
-  //     id: 125,
-  //     episodeId: 1020,
-  //     userId: 16,
-  //     content:
-  //       'I’ve been looking forward to the new season for such a long time! Finally,Sherlock and Watson are back!',
-  //     likeNum: 10,
-  //     parentCommentId: 123,
-  //     createdAt: '2021-12-15',
-  //     modifiedAt: '2021-12-15',
-  //   },
-  //   {
-  //     id: 126,
-  //     episodeId: 1020,
-  //     userId: 3,
-  //     content: 'It was bit disappointing.',
-  //     likeNum: 2,
-  //     parentCommentId: 123,
-  //     createdAt: '2021-12-14',
-  //     modifiedAt: '2021-12-15',
-  //   },
-  // ]
-
   const [isModelOpen, setIsModalOpen] = useState(false);
   // const [hasDeleted, setHasdeleted] = useState(false);
 
@@ -240,16 +200,19 @@ export default function Comment({
           <div>
             {comment.liked ? (
               <IconButton color="primary" onClick={handleLike}>
-                <i class="fas fa-heart"></i> Like {comment.likeNum}
+                <i class="fas fa-heart"></i> <span className="icon-name">Like</span>{' '}
+                {comment.likeNum}
               </IconButton>
             ) : (
               <IconButton color="grey" onClick={handleLike}>
-                <i class="fas fa-heart"></i> Like {comment.likeNum}
+                <i class="fas fa-heart"></i> <span className="icon-name">Like</span>{' '}
+                {comment.likeNum}
               </IconButton>
             )}
 
             <IconButton color="grey" onClick={openReplyHandler}>
-              <i class="fas fa-comment-alt"></i> Reply {replyNum}
+              <i class="fas fa-comment-alt"></i> <span className="icon-name">Reply</span>{' '}
+              {replyNum}
             </IconButton>
           </div>
           {comment.userId === userId ? (
@@ -292,19 +255,6 @@ export default function Comment({
       </CommentContainer>
       {isReplyOpen ? (
         <div>
-          {replies
-            ? replies.map((reply) => (
-                <Reply
-                  tokenState={tokenState}
-                  reply={reply}
-                  userId={userId}
-                  userRole={userRole}
-                  editHandler={editReplyHandler}
-                  deleteReplyHandler={deleteReplyHandler}
-                  likeHandler={likeReplyHandler}
-                />
-              ))
-            : null}
           <ReplyFormContainer>
             <CommentForm
               tokenState={tokenState}
@@ -318,6 +268,19 @@ export default function Comment({
               parentCommentId={comment.id}
             />
           </ReplyFormContainer>
+          {replies
+            ? replies.map((reply) => (
+                <Reply
+                  tokenState={tokenState}
+                  reply={reply}
+                  userId={userId}
+                  userRole={userRole}
+                  editHandler={editReplyHandler}
+                  deleteReplyHandler={deleteReplyHandler}
+                  likeHandler={likeReplyHandler}
+                />
+              ))
+            : null}
         </div>
       ) : null}
     </>

@@ -14,6 +14,7 @@ const Main = styled.article`
   /* padding: 1rem; */
   /* border: 1px solid ${colors.black}; */
   display: ${(props) => (props.isDeleted ? 'none' : 'block')};
+  cursor: pointer;
 `;
 
 const NotificationContainer = styled.div`
@@ -29,7 +30,6 @@ const NotificationContainer = styled.div`
 
   div {
     display: flex;
-    gap: 0.5rem;
   }
 
   p {
@@ -77,7 +77,10 @@ export default function Notification({
   };
 
   // 체크 기능
-  const [colorChangeIsChecked, setChecked] = useState(propsIsCheckedFromDb);
+  const [colorChangeIsChecked, setColorChangeIsChecked] = useState(propsIsCheckedFromDb);
+  const [isHidden, setIsHidden] = useState(propsIsCheckedFromDb);
+  console.log(isHidden);
+
   const handleCheck = () => {
     axios
       .patch(
@@ -93,14 +96,15 @@ export default function Notification({
         }
       )
       .then((data) => {
-        setChecked(1);
+        setColorChangeIsChecked(1);
+        setIsHidden(1);
       })
       .catch(() => console.log('handleCheck 에러'));
   };
 
   return (
     <>
-      <Main isDeleted={isDeleted}>
+      <Main isDeleted={isDeleted} onClick={handleCheck}>
         <NotificationContainer
           propsIsCheckedFromDb={propsIsCheckedFromDb}
           colorChangeIsChecked={colorChangeIsChecked}
@@ -109,11 +113,8 @@ export default function Notification({
             [<span className="quote">{content}</span>]에 답글이 달렸습니다.
           </p>
           <div>
-            <IconButton color="grey" onClick={handleCheck}>
-              <i class="far fa-check-square"></i>
-            </IconButton>
             <IconButton color="grey" onClick={handleDelete}>
-              <i class="far fa-trash-alt"></i>
+              <i class="fas fa-times"></i>
             </IconButton>
           </div>
         </NotificationContainer>

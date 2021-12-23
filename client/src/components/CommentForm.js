@@ -46,7 +46,7 @@ export default function CommentForm({
     e.preventDefault();
     if (!userId) {
       setIsModalOpen(true);
-    } else {
+    } else if (content !== '') {
       postComment(
         tokenState,
         userId,
@@ -68,8 +68,8 @@ export default function CommentForm({
           parentCommentId
         );
         setContent('');
-        console.log('comment made');
       });
+    } else {
     }
   };
 

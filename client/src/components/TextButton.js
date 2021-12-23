@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { colors } from '../styles/Colors';
+import { device } from '../styles/Breakpoints';
 
 const SolidButton = styled.button`
   /* 공통 스타일 */
@@ -14,8 +15,11 @@ const SolidButton = styled.button`
   white-space: nowrap;
 
   /* 크기 */
-  font-size: 1rem;
+  font-size: 0.85rem;
   width: ${(props) => (props.width === 'fit' ? 'fit-content' : '100%')};
+  @media ${device.tablet} {
+    font-size: 1rem;
+  }
 
   /* 색상 */
   background-color: ${(props) => colors[props.color]};
@@ -40,8 +44,11 @@ const TransparentButton = styled.button`
   white-space: nowrap;
 
   /* 크기 */
-  font-size: 1rem;
+  font-size: 0.85rem;
   width: ${(props) => (props.width === 'fit' ? 'fit-content' : '100%')};
+  @media ${device.tablet} {
+    font-size: 1rem;
+  }
 
   /* 색상 */
   color: ${(props) => colors[props.color]};

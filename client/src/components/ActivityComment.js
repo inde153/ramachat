@@ -3,6 +3,7 @@ import { colors } from '../styles/Colors';
 import IconButton from './IconButton';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { device } from '../styles/Breakpoints';
 
 const CommentContainer = styled.article`
   width: 100%;
@@ -23,10 +24,15 @@ const ButtonContainer = styled.div`
 
 const CommentInfoContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
 
   .created-date {
     color: ${colors.grey};
+  }
+
+  @media ${device.tablet} {
+    flex-wrap: nowrap;
   }
 `;
 
@@ -55,8 +61,8 @@ export default function ActivityComment({ comment, userId }) {
               <Link
                 to={`/drama/${comment.dramaId}/comments/season/${comment.seasonIndex}/episode/${comment.episodeIndex}`}
               >
-                <IconButton color="grey" onClick={handleLink}>
-                  <i class="fas fa-external-link-alt"></i> Click to Link
+                <IconButton color="secondary" onClick={handleLink}>
+                  <i class="fas fa-external-link-alt"></i> 댓글 페이지로 이동
                 </IconButton>
               </Link>
             </div>

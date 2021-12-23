@@ -1,16 +1,18 @@
 import styled from 'styled-components';
 import { colors } from '../styles/Colors';
 import { useNavigate } from 'react-router-dom';
+import { device } from '../styles/Breakpoints';
 
 const Item = styled.li`
   list-style: none;
   display: grid;
-  grid-template-columns: 150px 1fr 60px;
   gap: 1rem;
+  grid-template-columns: 150px 1fr 60px;
   padding: 1rem;
   align-items: center;
   border-top: 1px solid ${colors.primary};
   cursor: pointer;
+
   &:hover {
     background-color: ${colors.primaryL};
   }
@@ -20,13 +22,21 @@ const Item = styled.li`
     width: 100%;
     height: 0;
     padding-bottom: 66%;
+    grid-column: 1 / 4;
     background-color: ${colors.greyL};
     background-image: url(${(props) => props.still});
     background-size: cover;
     background-position: center center;
+    @media ${device.tablet} {
+      grid-column: 1 / 2;
+    }
   }
   h4 {
     margin: 0;
+    grid-column: 1 / 3;
+    @media ${device.tablet} {
+      grid-column: 2 / 3;
+    }
   }
   .overview {
     grid-column: 1 / span 3;

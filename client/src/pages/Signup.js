@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -38,6 +38,7 @@ const LoginContainer = styled.div`
   }
   .alert {
     font-family: SpoqaHanSansNeo-Regular;
+    white-space: pre-line;
   }
 `;
 
@@ -81,8 +82,17 @@ export default function Signup() {
         password: userInfo.password,
       })
       .then(() => setIsOpen(!isOpen)) // 회원가입 버튼 클릭시 모달 열기
-      .catch(() => {
-        setErrorMessage('이미 존재하는 회원입니다');
+      .catch((err) => {
+        // const errCode = err.response.status;
+        const errMessage = err.response.data.message;
+        if (errMessage === 'already existed userId') {
+          setErrorMessage('이미 존재하는 유저 아이디입니다!');
+        } else if (errMessage === 'already existed email') {
+          setErrorMessage('이미 존재하는 이메일입니다!');
+        } else {
+          setErrorMessage('회원가입에 실패하였습니다!');
+        }
+        console.log('handleSignup 에러');
       });
   };
 
@@ -131,8 +141,8 @@ export default function Signup() {
     (e) => {
       setUserInfo({ ...userInfo, userId: e.target.value });
       setUserId(e.target.value);
-      if (e.target.value.length < 2 || e.target.value.length > 5) {
-        setUserIdMessage('2글자 이상 6글자 미만으로 입력해주세요.');
+      if (e.target.value.length < 3 || e.target.value.length > 10) {
+        setUserIdMessage('3글자 이상 10글자 이하로 입력해주세요.');
         setIsEmail(false);
       } else {
         setUserIdMessage('올바른 이름 형식입니다 :)');
@@ -151,7 +161,11 @@ export default function Signup() {
       setPassword(passwordCurrent);
 
       if (!passwordRegex.test(passwordCurrent)) {
-        setPasswordMessage('숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!');
+        setPasswordMessage(
+          `숫자+영문자+특수문자 조합으로
+          8자리 이상 입력해주세요!
+          사용 가능한 특수문자는 !@#$%^*+=- 입니다.`
+        );
         setIsPassword(false);
       } else {
         setPasswordMessage('안전한 비밀번호에요 :)');
@@ -172,7 +186,7 @@ export default function Signup() {
         setPasswordConfirmMessage('비밀번호를 똑같이 입력했어요 :)');
         setIsPasswordConfirm(true);
       } else {
-        setPasswordConfirmMessage('비밀번호가 틀려요. 다시 확인해주세요!');
+        setPasswordConfirmMessage('비밀번호가 달라요. 다시 확인해주세요!');
         setIsPasswordConfirm(false);
       }
     },
@@ -186,6 +200,12 @@ export default function Signup() {
     setIsOpen(!isOpen);
     console.log(isOpen);
   };
+
+  useEffect(() => {
+    if (isUserId && isEmail && isPassword && isPasswordConfirm) {
+      setErrorMessage('');
+    }
+  }, [isUserId, isEmail, isPassword, isPasswordConfirm]);
 
   return (
     <Main>
@@ -236,7 +256,7 @@ export default function Signup() {
             width="full"
             onClick={() =>
               !(isEmail && isUserId && isPassword && isPasswordConfirm)
-                ? setErrorMessage('유효하지 않은 입력이 있어요')
+                ? setErrorMessage('채우지 않았거나 유효하지 않은 입력이 있어요')
                 : handleSignup()
             }
           >

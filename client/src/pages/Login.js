@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -78,9 +78,24 @@ export default function Login({ handleResponseSuccess }) {
         .then((data) => {
           handleResponseSuccess(data.data.data);
         })
-        .catch(() => setErrorMessage('유효하지 않은 아이디와 비밀번호 입니다'));
+        .catch((err) => {
+          const errCode = err.response.status;
+          if (errCode === 401) {
+            setErrorMessage('유효하지 않은 아이디 입니다!');
+          } else if (errCode === 404) {
+            setErrorMessage('유효하지 않은 비밀번호 입니다!');
+          } else {
+            setErrorMessage('로그인을 실패했습니다!');
+          }
+        });
     }
   };
+
+  useEffect(() => {
+    if (loginInfo.userId && loginInfo.password) {
+      setErrorMessage('');
+    }
+  }, [loginInfo]);
 
   return (
     <Main>

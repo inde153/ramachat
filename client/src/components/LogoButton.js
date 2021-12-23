@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import img from '../assets/ramachat-logo.png';
 import { colors } from '../styles/Colors';
+import { device } from '../styles/Breakpoints';
 
 const StyledButton = styled.button`
   /* 공통 스타일 */
@@ -13,14 +14,27 @@ const StyledButton = styled.button`
   padding: 0.5rem 1rem;
 
   /* 크기 */
-  font-size: 2rem;
+  font-size: 1.5rem;
+  @media ${device.tablet} {
+    font-size: 2rem;
+  }
 
   /* 색상 */
   color: ${colors.white};
 
   img {
-    height: 3.5rem;
+    height: 2.5rem;
     margin-right: 0.5rem;
+    @media ${device.tablet} {
+      height: 3rem;
+    }
+  }
+
+  span {
+    display: none;
+    @media ${device.tablet} {
+      display: inline;
+    }
   }
 
   &:hover {

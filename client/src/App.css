@@ -49,6 +49,7 @@ a {
 p {
   line-height: 1.6;
   font-family: 'SpoqaHanSansNeo', sans-serif;
+  margin: 0.25rem 0;
 }
 
 textarea {

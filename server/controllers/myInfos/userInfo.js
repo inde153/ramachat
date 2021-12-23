@@ -16,9 +16,6 @@ module.exports = (req, res) => {
       userId,
     },
   }).then((data) => {
-    if (!data) {
-      return res.status(404).send('not found user');
-    }
     delete data.dataValues.password;
     const userInfo = {
       userId: data.dataValues.userId,

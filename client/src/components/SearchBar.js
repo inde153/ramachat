@@ -33,7 +33,9 @@ export default function SearchBar() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate(`/search?query=${keyword}`);
+    if (keyword !== '') {
+      navigate(`/search?query=${keyword}`);
+    }
   };
 
   return (
