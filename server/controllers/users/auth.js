@@ -8,10 +8,6 @@ module.exports = (req, res) => {
     return;
   }
 
-<<<<<<< HEAD
-  console.log('authorization', req.headers.authorization);
-=======
->>>>>>> 5c1c2edae42265fbad04f9ec63fb5ec10f4273b3
   const accessTokenData = isAuthorized(req.headers.authorization);
 
   if (accessTokenData === null) {

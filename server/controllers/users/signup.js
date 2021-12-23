@@ -11,23 +11,26 @@ module.exports = (req, res) => {
   Users.findOne({
     where: {
       userId,
+      email,
     },
   })
     .then((data) => {
-      if (data) {
-        return res.status(409).send('already existed email');
-      } else {
-        const pw = encrypt(password);
-        const em = encrypt(email);
-
-        Users.create({
-          userId: userId,
-          password: pw,
-          email: em,
-        });
-
-        return res.status(200).send('ok');
+      if (data.userId) {
+        return res.status(409).send('already existed userId');
       }
+      if (data.email) {
+        return res.status(409).send('already existed email');
+      }
+      const pw = encrypt(password);
+      const em = encrypt(email);
+
+      Users.create({
+        userId: userId,
+        password: pw,
+        email: em,
+      });
+
+      return res.status(200).send('ok');
     })
     .catch((err) => {
       console.log(err);
