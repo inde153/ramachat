@@ -92,13 +92,18 @@ export function deleteComment(tokenState, commentId) {
     });
 }
 
-export function getReplies(parentCommentId) {
+export function getReplies(tokenState, parentCommentId) {
   return axios
     .get(
-      `${process.env.REACT_APP_SERVER_URL}/replies?parent-comment-id=${parentCommentId}`
+      `${process.env.REACT_APP_SERVER_URL}/replies?parent-comment-id=${parentCommentId}`,
+      {
+        headers: {
+          authorization: 'Bearer ' + tokenState,
+        },
+      }
     )
     .then((result) => {
-      console.log('replies: ', result);
+      // console.log('응답 코멘트: ', result.data.comments);
       return result.data.comments;
     });
 }

@@ -54,6 +54,7 @@ export default function Comment({
   userRole,
   editHandler,
   deleteHandler,
+  likeHandler,
 }) {
   // const [replies, setReplies] = useState([
   //   {
@@ -112,7 +113,6 @@ export default function Comment({
 
   const handleDelete = () => {
     deleteComment(tokenState, comment.id).then((result) => {
-      console.log('delete response', result);
       if (result.status === 200) {
         // setHasdeleted(true);
         openModalHandler();
@@ -131,7 +131,7 @@ export default function Comment({
 
   useEffect(() => {
     const sendAPICall = async () => {
-      const data = await getReplies(comment.id);
+      const data = await getReplies(tokenState, comment.id);
       setReplies(data);
     };
     sendAPICall();
@@ -149,6 +149,7 @@ export default function Comment({
       userId,
     };
     setReplies([newReply, ...replies]);
+    setReplyNum(replyNum + 1);
   };
 
   // const [content, setContent] = useState(comment.content);
@@ -184,9 +185,12 @@ export default function Comment({
     ]);
   };
 
+  const [replyNum, setReplyNum] = useState(comment.replyNum);
+
   const deleteReplyHandler = (replyId) => {
     const idx = replies.findIndex((rep) => rep.id === replyId);
     setReplies([...replies.slice(0, idx), ...replies.slice(idx + 1)]);
+    setReplyNum(replyNum - 1);
   };
 
   const [liked, setLiked] = useState(comment.liked);
@@ -194,17 +198,22 @@ export default function Comment({
 
   const handleLike = () => {
     likeComment(tokenState, comment.id).then((result) => {
-      if (result) {
-        setLiked(true);
-        setLikedNum(likedNum + 1);
-      } else {
-        setLiked(false);
-        setLikedNum(likedNum - 1);
-      }
+      likeHandler(comment.id, result);
     });
   };
 
-  console.log(comment);
+  const likeReplyHandler = (replyId, isLiked) => {
+    const idx = replies.findIndex((rep) => rep.id === replyId);
+    setReplies([
+      ...replies.slice(0, idx),
+      {
+        ...replies[idx],
+        liked: isLiked,
+        likeNum: isLiked ? ++replies[idx].likeNum : --replies[idx].likeNum,
+      },
+      ...replies.slice(idx + 1),
+    ]);
+  };
 
   return (
     <>
@@ -221,18 +230,18 @@ export default function Comment({
         )}
         <ButtonContainer>
           <div>
-            {liked ? (
+            {comment.liked ? (
               <IconButton color="primary" onClick={handleLike}>
-                <i class="fas fa-heart"></i> Like {likedNum}
+                <i class="fas fa-heart"></i> Like {comment.likeNum}
               </IconButton>
             ) : (
               <IconButton color="grey" onClick={handleLike}>
-                <i class="fas fa-heart"></i> Like {likedNum}
+                <i class="fas fa-heart"></i> Like {comment.likeNum}
               </IconButton>
             )}
 
             <IconButton color="grey" onClick={openReplyHandler}>
-              <i class="fas fa-comment-alt"></i> Reply {comment.replyNum}
+              <i class="fas fa-comment-alt"></i> Reply {replyNum}
             </IconButton>
           </div>
           {comment.userId === userId ? (
@@ -284,6 +293,7 @@ export default function Comment({
                   userRole={userRole}
                   editHandler={editReplyHandler}
                   deleteReplyHandler={deleteReplyHandler}
+                  likeHandler={likeReplyHandler}
                 />
               ))
             : null}

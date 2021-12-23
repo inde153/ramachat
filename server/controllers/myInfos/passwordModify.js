@@ -3,12 +3,12 @@ const { isAuthorized } = require('../tokenFunctions');
 const { decrypt, encrypt } = require('../users/crypto');
 
 module.exports = (req, res) => {
+  console.log('body', req.body);
   const accessTokenData = isAuthorized(req.headers.authorization);
 
   if (accessTokenData === null) {
     res.status(401).send({ data: null, message: 'not authorized' });
   }
-
   const { userId } = accessTokenData;
   const { password } = req.body;
   const { newPassword } = req.body;

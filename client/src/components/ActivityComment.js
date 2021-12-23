@@ -1,13 +1,8 @@
 import styled from 'styled-components';
 import { colors } from '../styles/Colors';
 import IconButton from './IconButton';
-import ActivityIconButton from './ActivityIconButton';
-import Modal from './Modal';
-import Reply from './Reply';
-import { deleteComment, getReplies, modifyComment } from '../api/CommentsDataAPI';
-import { useEffect, useState } from 'react';
-import CommentForm from './CommentForm';
-import TextButton from './TextButton';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const CommentContainer = styled.article`
   width: 100%;
@@ -35,207 +30,35 @@ const CommentInfoContainer = styled.div`
   }
 `;
 
-// const ReplyFormContainer = styled.div`
-//   padding: 1rem;
-//   border-top: 1px solid ${colors.grey};
-//   background-color: ${colors.greyL};
-// `;
-
-export default function ActivityComment({ tokenState, comment, userId }) {
-  // const [replies, setReplies] = useState([
-  //   {
-  //     id: 125,
-  //     episodeId: 1020,
-  //     userId: 16,
-  //     content:
-  //       'I’ve been looking forward to the new season for such a long time! Finally,Sherlock and Watson are back!',
-  //     likeNum: 10,
-  //     parentCommentId: 123,
-  //     createdAt: '2021-12-15',
-  //     modifiedAt: '2021-12-15',
-  //   },
-  //   {
-  //     id: 126,
-  //     episodeId: 1020,
-  //     userId: 3,
-  //     content: 'It was bit disappointing.',
-  //     likeNum: 2,
-  //     parentCommentId: 123,
-  //     createdAt: '2021-12-14',
-  //     modifiedAt: '2021-12-15',
-  //   },
-  // ]);
-  // dummy data
-  // [
-  //   {
-  //     id: 125,
-  //     episodeId: 1020,
-  //     userId: 16,
-  //     content:
-  //       'I’ve been looking forward to the new season for such a long time! Finally,Sherlock and Watson are back!',
-  //     likeNum: 10,
-  //     parentCommentId: 123,
-  //     createdAt: '2021-12-15',
-  //     modifiedAt: '2021-12-15',
-  //   },
-  //   {
-  //     id: 126,
-  //     episodeId: 1020,
-  //     userId: 3,
-  //     content: 'It was bit disappointing.',
-  //     likeNum: 2,
-  //     parentCommentId: 123,
-  //     createdAt: '2021-12-14',
-  //     modifiedAt: '2021-12-15',
-  //   },
-  // ]
-
-  const [isModelOpen, setIsModalOpen] = useState(false);
-  const [hasDeleted, setHasdeleted] = useState(false);
-
-  const openModalHandler = () => {
-    setIsModalOpen(!isModelOpen);
-  };
-
-  const handleDelete = () => {
-    deleteComment(tokenState, comment.id).then((result) => {
-      console.log('delete response', result);
-      if (result.status === 200) {
-        setHasdeleted(true);
-        openModalHandler();
-      }
-    });
-  };
-
-  // const [isReplyOpen, setIsReplyOpen] = useState(false);
-
-  // const openReplyHandler = () => {
-  //   setIsReplyOpen(!isReplyOpen);
-  // };
-
-  // const [replies, setReplies] = useState([]);
-
-  // useEffect(() => {
-  //   const sendAPICall = async () => {
-  //     const data = await getReplies(comment.id);
-  //     setReplies(data);
-  //   };
-  //   sendAPICall();
-  // }, [isReplyOpen]);
-
-  // const addNewReply = (content, createdAt, episodeId, id, userId, parentCommentId) => {
-  //   const newReply = {
-  //     content,
-  //     createdAt,
-  //     episodeId,
-  //     id,
-  //     likeNum: 0,
-  //     parentCommentId,
-  //     updatedAt: createdAt,
-  //     userId,
-  //   };
-  //   setReplies([...replies, newReply]);
-  // };
-
+export default function ActivityComment({ comment, userId }) {
   const [content, setContent] = useState(comment.content);
-  const [editedContent, setEditedContent] = useState(comment.content);
-  const [isEditable, setIsEditable] = useState(false);
-
-  const handleTextarea = (e) => {
-    setEditedContent(e.target.value);
-  };
-
-  const handleEditable = () => {
-    setIsEditable(!isEditable);
-  };
-
-  const handleEditRequest = () => {
-    modifyComment(tokenState, comment.id, editedContent).then((result) => {
-      setIsEditable(!isEditable);
-      setContent(editedContent);
-    });
-  };
 
   const handleLink = () => {
     console.log('링크로 이동 수정');
   };
+
   return (
     <>
-      <CommentContainer hasDeleted={hasDeleted}>
+      <CommentContainer>
         <CommentInfoContainer>
           <p>이름없는라마</p>
           <p className="created-date">{comment.createdAt}</p>
         </CommentInfoContainer>
-        {isEditable ? (
-          <textarea value={editedContent} onChange={handleTextarea}></textarea>
-        ) : (
-          <p>{content}</p>
-        )}
+        <p>{content}</p>
         <ButtonContainer>
-          <div>
-            <ActivityIconButton color="grey">
-              <span class="fas fa-heart"></span> Like {comment.likesNum}
-            </ActivityIconButton>
-            <ActivityIconButton color="grey">
-              <span class="fas fa-comment-alt"></span> Reply {comment.replyNum}
-            </ActivityIconButton>
-          </div>
           {comment.userId === userId ? (
-            <div>
-              {isEditable ? (
-                <div className="edit-comment">
-                  <IconButton color="primary" onClick={handleEditable}>
-                    <i class="fas fa-times"></i>
-                  </IconButton>
-                  <IconButton color="secondary" onClick={handleEditRequest}>
-                    <i class="fas fa-check"></i>
-                  </IconButton>
-                </div>
-              ) : null}
-              {!isEditable ? (
-                <div className="edit-comment">
-                  <IconButton color="grey" onClick={handleEditable}>
-                    <i class="far fa-edit"></i>
-                  </IconButton>
-                  <IconButton color="grey" onClick={openModalHandler}>
-                    <i class="far fa-trash-alt"></i>
-                  </IconButton>
-                  <IconButton color="grey" onClick={handleLink}>
-                    <i class="fas fa-external-link-alt"></i>
-                  </IconButton>
-                </div>
-              ) : null}
+            <div className="edit-comment">
+              <Link
+                to={`/drama/${comment.dramaId}/comments/season/${comment.seasonIndex}/episode/${comment.episodeIndex}`}
+              >
+                <IconButton color="grey" onClick={handleLink}>
+                  <i class="fas fa-external-link-alt"></i> Click to Link
+                </IconButton>
+              </Link>
             </div>
           ) : null}
         </ButtonContainer>
-        <Modal
-          isOpen={isModelOpen}
-          openModalHandler={openModalHandler}
-          modalActionlHandler={handleDelete}
-          noticeMessage={'정말 삭제하시겠습니까?'}
-          buttonMessage={'삭제'}
-        />
       </CommentContainer>
-      {/* {isReplyOpen ? (
-        <div>
-          {replies
-            ? replies.map((reply) => <Reply reply={reply} userId={userId} />)
-            : null}
-          <ReplyFormContainer>
-            <CommentForm
-              tokenState={tokenState}
-              userId={userId}
-              dramaId={drama.id}
-              dramaName={drama.name}
-              seasonIndex={episode.season_number}
-              episodeIndex={episode.episode_number}
-              episodeId={episode.id}
-              addNewComment={addNewReply}
-              parentCommentId={comment.id}
-            />
-          </ReplyFormContainer>
-        </div>
-      ) : null} */}
     </>
   );
 }

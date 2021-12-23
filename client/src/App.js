@@ -20,6 +20,10 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  useEffect(() => {
+    setTokenState(sessionStorage.getItem('token'));
+  }, []);
+
   const isAuthenticated = () => {
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/auth`, {

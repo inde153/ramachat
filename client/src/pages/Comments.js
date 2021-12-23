@@ -179,6 +179,19 @@ export default function Comments({ tokenState, userInfo }) {
     setComments([...comments.slice(0, idx), ...comments.slice(idx + 1)]);
   };
 
+  const likeHandler = (commentId, isLiked) => {
+    const idx = comments.findIndex((comment) => comment.id === commentId);
+    setComments([
+      ...comments.slice(0, idx),
+      {
+        ...comments[idx],
+        liked: isLiked,
+        likeNum: isLiked ? ++comments[idx].likeNum : --comments[idx].likeNum,
+      },
+      ...comments.slice(idx + 1),
+    ]);
+  };
+
   return (
     <Main>
       <EpisodeInfo>
@@ -217,6 +230,7 @@ export default function Comments({ tokenState, userInfo }) {
               userRole={userRole}
               editHandler={editHandler}
               deleteHandler={deleteHandler}
+              likeHandler={likeHandler}
             />
           ))}
         </CommentsList>

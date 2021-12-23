@@ -44,9 +44,6 @@ module.exports = async (req, res) => {
       )
       .then((result) => {
         return result[0].map((el) => el.id);
-      })
-      .catch((err) => {
-        res.status(500).send('err');
       });
 
     let replyResponse = searchedReplies.map((el) => {

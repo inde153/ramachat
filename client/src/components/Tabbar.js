@@ -10,6 +10,10 @@ const TabContainer = styled.div`
   width: 10%;
   justify-content: left;
   align-items: center;
+  /* position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0; */
 
   padding: 1.3rem;
   cursor: pointer;

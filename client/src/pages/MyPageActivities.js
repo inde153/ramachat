@@ -1,9 +1,7 @@
 import Tabbar from '../components/Tabbar';
 import axios from 'axios';
 import styled from 'styled-components';
-// import Comment from '../components/Comment';
 import ActivityComment from '../components/ActivityComment';
-import { getDrama, getEpisode } from '../api/DramaDataAPI';
 import { colors } from '../styles/Colors';
 import { device } from '../styles/Breakpoints';
 import { useState, useEffect } from 'react';
@@ -23,8 +21,11 @@ const Main = styled.main`
 
 const CommentsList = styled.ul`
   padding: 0;
-  margin-top: 1px;
   margin-bottom: 100px;
+
+  h1 {
+    padding-left: 10px;
+  }
 
   @media ${device.tablet} {
     margin-bottom: 2rem;
@@ -35,9 +36,7 @@ export default function MyPageActivities({ tokenState }) {
   const token = tokenState ? tokenState : sessionStorage.getItem('token');
   const [myComments, setMyComments] = useState({});
   const commentsArray = myComments ? Object.values(myComments) : undefined;
-  // console.log('Comments', Object.values(myComments));
   console.log(commentsArray);
-  // ! 댓글 없을 경우 방어코드 작성 => myComments[0].userId 못읽음
 
   const getMyComment = () => {
     axios
@@ -54,32 +53,6 @@ export default function MyPageActivities({ tokenState }) {
       .catch(() => console.log('getMyComment 에러'));
   };
 
-  // 드라마, 에피소드는 API
-  // const [drama, setDrama] = useState({});
-  // const dramaId = useParams().id;
-  // const seasonNum = useParams().season;
-  // const episodeNum = useParams().episode;
-
-  // useEffect(() => {
-  //   setDrama({});
-  //   const sendAPICall = async () => {
-  //     const data = await getDrama(dramaId);
-  //     setDrama(data);
-  //   };
-  //   sendAPICall();
-  // }, [dramaId]);
-
-  // const [episode, setEpisode] = useState({});
-
-  // useEffect(() => {
-  //   setEpisode({});
-  //   const sendAPICall = async () => {
-  //     const data = await getEpisode(dramaId, seasonNum, episodeNum);
-  //     setEpisode(data);
-  //   };
-  //   sendAPICall();
-  // }, [dramaId, seasonNum, episodeNum]);
-
   useEffect(() => {
     getMyComment();
   }, []);
@@ -88,12 +61,8 @@ export default function MyPageActivities({ tokenState }) {
     <>
       <Main>
         <Tabbar></Tabbar>
-        {/* <span>여기는 내 활동기록</span> */}
         <CommentsList>
-          {/* <div>{test}</div> */}
-          {/* {commentsArray.map((el) => (
-            <div>{el.content}</div>
-          ))} */}
+          <h1>My Comments</h1>
           {commentsArray.map((comment) => (
             <ActivityComment
               tokenState={tokenState}

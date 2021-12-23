@@ -1,16 +1,18 @@
 import styled from 'styled-components';
-import { colors } from '../styles/Colors';
+import axios from 'axios';
 import IconButton from './IconButton';
+import { colors } from '../styles/Colors';
 import { useState } from 'react';
 
+axios.defaults.withCredentials = true;
+
 // 클릭시 색 바꾸기 (checked, unchecked) => 탭바에도 적용
-// delete 아이콘 넣기
 
 const Main = styled.article`
   width: 100%;
   padding: 1rem;
-  display: block;
   /* border: 1px solid ${colors.black}; */
+  display: ${(props) => (props.isDeleted ? 'none' : 'block')};
 `;
 
 const NotificationContainer = styled.div`
@@ -19,9 +21,9 @@ const NotificationContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   border: 1px solid ${colors.black};
-  display: ${(props) => (props.isDeleted ? 'none' : 'flex')};
-  background-color: ${(props) => (props.isChecked ? `${colors.primaryL}` : 'white')};
-  margin-bottom: 5px;
+  // 체크 이전(0)은 핑크색, 체크 이후(1)는 하얀색
+  background-color: ${(props) =>
+    props.colorChangeIsChecked === 1 ? 'white' : `${colors.primaryL}`};
 
   div {
     display: flex;
@@ -33,24 +35,61 @@ const NotificationContainer = styled.div`
   }
 `;
 
-export default function Notification() {
+export default function Notification({
+  content,
+  propsIsCheckedFromDb,
+  tokenState,
+  notiId,
+}) {
+  const token = tokenState ? tokenState : sessionStorage.getItem('token');
+
   // 삭제 기능
-  const [isDeleted, setIsdeleted] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
   const handleDelete = () => {
-    setIsdeleted(true);
+    axios
+      .delete(`${process.env.REACT_APP_SERVER_URL}/deleteNotification/${notiId}`, {
+        headers: {
+          'Content-Type': `application/json`,
+          authorization: 'Bearer ' + tokenState,
+        },
+        withCredentials: true,
+      })
+      .then(() => {
+        setIsDeleted(true);
+      })
+      .catch(() => console.log('handleDelete 에러'));
   };
 
   // 체크 기능
-  const [isChecked, setIsChecked] = useState(false);
+  const [colorChangeIsChecked, setChecked] = useState(propsIsCheckedFromDb);
   const handleCheck = () => {
-    setIsChecked(!isChecked);
+    axios
+      .patch(
+        `${process.env.REACT_APP_SERVER_URL}/checkNotification/${notiId}`,
+        {
+          withCredentials: true,
+        },
+        {
+          headers: {
+            'Content-Type': `application/json`,
+            authorization: 'Bearer ' + token,
+          },
+        }
+      )
+      .then((data) => {
+        setChecked(1);
+      })
+      .catch(() => console.log('handleCheck 에러'));
   };
 
   return (
     <>
-      <Main>
-        <NotificationContainer isDeleted={isDeleted} isChecked={isChecked}>
-          <p>api 요청 comment로 변경하기 "comment 내용" 댓글에 답변이 달렸습니다.</p>
+      <Main isDeleted={isDeleted}>
+        <NotificationContainer
+          propsIsCheckedFromDb={propsIsCheckedFromDb}
+          colorChangeIsChecked={colorChangeIsChecked}
+        >
+          <p>"{content}" 댓글에 답변이 달렸습니다.</p>
           <div>
             <IconButton color="grey" onClick={handleCheck}>
               <i class="far fa-check-square"></i>
@@ -59,12 +98,6 @@ export default function Notification() {
               <i class="far fa-trash-alt"></i>
             </IconButton>
           </div>
-        </NotificationContainer>
-        <NotificationContainer>
-          <p>You have a new reply on your comment</p>
-        </NotificationContainer>
-        <NotificationContainer>
-          <p>You have a new reply on your comment</p>
         </NotificationContainer>
       </Main>
     </>
