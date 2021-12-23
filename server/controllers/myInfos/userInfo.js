@@ -5,7 +5,9 @@ const { decrypt } = require('../users/crypto');
 module.exports = (req, res) => {
   const accessTokenData = isAuthorized(req.headers.authorization);
 
-  const userId = accessTokenData.userId;
+  const { userId, email } = accessTokenData;
+
+  console.log(userId, email);
   if (accessTokenData === null) {
     res.status(401).send({ data: null, message: 'not authorized' });
   }
@@ -14,17 +16,15 @@ module.exports = (req, res) => {
       userId,
     },
   }).then((data) => {
-    const dbem = decrypt(data.email);
+    if (!data) {
+      return res.status(404).send('not found user');
+    }
     delete data.dataValues.password;
     const userInfo = {
       userId: data.dataValues.userId,
-      email: dbem,
+      email: data.dataValues.email,
     };
 
-    if (!data) {
-      return res.status(404).send('not found user');
-    } else {
-      return res.status(200).json({ data: { userInfo: userInfo }, message: 'ok' });
-    }
+    return res.status(200).json({ data: { userInfo: userInfo }, message: 'ok' });
   });
 };
